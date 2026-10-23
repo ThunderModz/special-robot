@@ -3,14 +3,14 @@ local playerGui = player:WaitForChild("PlayerGui")
 
 -- 🎃 Halloween Colors
 local COLORS = {
-    bg        = Color3.fromRGB(22, 14, 34),
-    bgLight   = Color3.fromRGB(48, 24, 66),
-    topBar    = Color3.fromRGB(255, 117, 24),
+    bg        = Color3.fromRGB(22, 14, 34),   -- dark purple-black
+    bgLight   = Color3.fromRGB(48, 24, 66),   -- purple
+    topBar    = Color3.fromRGB(255, 117, 24), -- pumpkin orange
     stroke    = Color3.fromRGB(255, 140, 0),
-    start     = Color3.fromRGB(255, 117, 24),
-    stop      = Color3.fromRGB(124, 58, 237),
+    start     = Color3.fromRGB(255, 117, 24), -- orange
+    stop      = Color3.fromRGB(124, 58, 237), -- witch purple
     text      = Color3.fromRGB(255, 244, 230),
-    candy     = Color3.fromRGB(166, 255, 77),
+    candy     = Color3.fromRGB(166, 255, 77), -- slime green
 }
 
 local screenGui = Instance.new("ScreenGui")
@@ -64,7 +64,7 @@ topGradient.Color = ColorSequence.new({
 topGradient.Rotation = 0
 topGradient.Parent = topBar
 
--- Header container
+-- Header container (auto-centers emoji + title + emoji)
 local header = Instance.new("Frame")
 header.Name = "Header"
 header.Size = UDim2.new(1, 0, 1, 0)
@@ -76,7 +76,7 @@ headerLayout.FillDirection = Enum.FillDirection.Horizontal
 headerLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 headerLayout.VerticalAlignment = Enum.VerticalAlignment.Center
 headerLayout.SortOrder = Enum.SortOrder.LayoutOrder
-headerLayout.Padding = UDim.new(0, 5)
+headerLayout.Padding = UDim.new(0, 5) -- equal gap on both sides of the title
 headerLayout.Parent = header
 
 -- Pumpkin Icon (left)
@@ -89,7 +89,7 @@ pumpkin.Font = Enum.Font.GothamBold
 pumpkin.LayoutOrder = 1
 pumpkin.Parent = header
 
--- Title
+-- Title (width follows the text length)
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(0, 0, 1, 0)
 title.AutomaticSize = Enum.AutomaticSize.X
@@ -102,7 +102,7 @@ title.Font = Enum.Font.GothamBlack
 title.LayoutOrder = 2
 title.Parent = header
 
--- Pumpkin Icon (right)
+-- Pumpkin Icon (right, same size as the left one)
 local pumpkinEnd = Instance.new("TextLabel")
 pumpkinEnd.Size = UDim2.new(0, 24, 0, 24)
 pumpkinEnd.BackgroundTransparency = 1
@@ -215,8 +215,7 @@ local function updateDrag(input)
 end
 
 mainFrame.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1
-        or input.UserInputType == Enum.UserInputType.Touch then
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
         dragging = true
         dragStart = input.Position
         startPos = mainFrame.Position
@@ -230,8 +229,7 @@ mainFrame.InputBegan:Connect(function(input)
 end)
 
 mainFrame.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement
-        or input.UserInputType == Enum.UserInputType.Touch then
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
         dragInput = input
     end
 end)
@@ -279,11 +277,7 @@ end
 local function tp(hp)
     Humanoid:ChangeState(11)
     local d = (HRP.Position - hp.Position).Magnitude
-    local t = TweenService:Create(
-        HRP,
-        TweenInfo.new(d / 25, Enum.EasingStyle.Linear),
-        {CFrame = hp.CFrame}
-    )
+    local t = TweenService:Create(HRP, TweenInfo.new(d / 25, Enum.EasingStyle.Linear), {CFrame = hp.CFrame})
     t:Play()
     t.Completed:Wait()
 end
@@ -297,8 +291,7 @@ local function startFarming()
             if target and LP:GetAttribute("Alive") then
                 tp(target)
                 local v = target:FindFirstChild("CoinVisual")
-                while v and not v:GetAttribute("Collected")
-                    and v.Parent and isFarming do
+                while v and not v:GetAttribute("Collected") and v.Parent and isFarming do
                     if not LP:GetAttribute("Alive") then break end
                     local n = getNearest()
                     if n and n ~= target then break end
